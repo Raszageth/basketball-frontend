@@ -48,3 +48,9 @@
 .stats-button:hover {
   background-color: #45a049;
 }
+
+.player-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}

@@ -11,6 +11,12 @@ import "../../components/scoreboard.css";
 import Scoreboard from "../../components/Scoreboard";
 import Modal from "../../components/Modal";
 
+const images = [
+  '/images/basketball-boy.png',
+  '/images/basketball-boy2.png',
+  '/images/basketball-boy3.png'
+];
+
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [rounds, setRounds] = useState<RoundType[]>([]);
@@ -27,6 +33,7 @@ const Dashboard: React.FC = () => {
   const [currentTeamName, setCurrentTeamName] = useState<string | null>(null);
   const [showTopPlayers, setShowTopPlayers] = useState(false);
   const [siteStatistics, setSiteStatistics] = useState<UserStat[]>([]);
+  const [playerImage, setPlayerImage] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -92,6 +99,8 @@ const Dashboard: React.FC = () => {
         }
       );
       setSelectedPlayer(response.data);
+      const randomImage = images[Math.floor(Math.random() * images.length)];
+      setPlayerImage(randomImage);
       setIsPlayerDetailsModalOpen(true);
     } catch (error) {
       console.error("Error fetching player data:", error);
@@ -121,7 +130,7 @@ const Dashboard: React.FC = () => {
 
   const calculateAverageScore = (player: PlayerType) => {
     return player.games_played > 0
-      ? player.total_score / player.games_played
+      ? parseFloat((player.total_score / player.games_played).toFixed(3))
       : 0;
   };
 
@@ -209,6 +218,7 @@ const Dashboard: React.FC = () => {
           isOpen={isPlayerDetailsModalOpen}
           onClose={closePlayerDetailsModal}
         >
+          <img src={playerImage} alt="Player" className="player-image" />
           <h2>{selectedPlayer.name} Details</h2>
           <p>Name: {selectedPlayer.name}</p>
           <p>Games Played: {selectedPlayer.games_played}</p>
