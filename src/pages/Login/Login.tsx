@@ -31,7 +31,8 @@ const Login: React.FC = () => {
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        setError(error.response.data);
+        const errorMessage = error.response.data.message;
+        setError(errorMessage);
       } else {
         setError("An error occured, please try again");
       }
